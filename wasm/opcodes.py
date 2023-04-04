@@ -200,8 +200,17 @@ OPCODES = [
 
 OPCODE_MAP = {x.id: x for x in OPCODES}
 
+EXT_FC_OPCODES = [
+    Opcode(0xfc0b, 'memory.fill', CurGrowMemImm(), 0),
+]
+EXT_FC_OPCODE_MAP = {(x.id & 0xff): x for x in EXT_FC_OPCODES}  # Key is the lowest byte.
+
+EXT_OPCODE_MAPS = {0xfc: EXT_FC_OPCODE_MAP}
+
+ALL_OPCODES = OPCODES + [op for opcode_map in EXT_OPCODE_MAPS.values() for op in opcode_map.values()]
+
 # Generate integer constants for opcodes.
-for cur_op in OPCODES:
+for cur_op in ALL_OPCODES:
     globals()[
         'OP_' + cur_op.mnemonic.upper().replace('.', '_').replace('/', '_')
     ] = cur_op.id

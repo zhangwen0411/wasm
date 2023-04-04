@@ -3,7 +3,7 @@ from __future__ import print_function, absolute_import, division, unicode_litera
 
 from collections import namedtuple
 from .modtypes import ModuleHeader, Section, SEC_UNK, SEC_NAME, NameSubSection
-from .opcodes import OPCODE_MAP
+from .opcodes import OPCODE_MAP, EXT_OPCODE_MAPS
 from .compat import byte2int
 
 
@@ -16,7 +16,15 @@ def decode_bytecode(bytecode):
     bytecode_wnd = memoryview(bytecode)
     while bytecode_wnd:
         opcode_id = byte2int(bytecode_wnd[0])
-        opcode = OPCODE_MAP[opcode_id]
+
+        if (opcode := OPCODE_MAP.get(opcode_id)) is None:
+            # Might be a multi-byte instruction.
+            if (ext_opcode_map := EXT_OPCODE_MAPS.get(opcode_id)) is None:
+                raise ValueError(f"unrecognized instruction: {opcode_id:#02x}")
+
+            bytecode_wnd = bytecode_wnd[1:]
+            opcode_id = byte2int(bytecode_wnd[0])
+            opcode = ext_opcode_map[opcode_id]
 
         if opcode.imm_struct is not None:
             offs, imm, _ = opcode.imm_struct.from_raw(None, bytecode_wnd[1:])

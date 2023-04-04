@@ -73,7 +73,7 @@ from .opcodes import (
     INSN_NO_FLOW,
 )
 
-for cur_op in opcodes.OPCODES:
+for cur_op in opcodes.ALL_OPCODES:
     globals()[
         'OP_' + cur_op.mnemonic.upper().replace('.', '_').replace('/', '_')
     ] = cur_op.id
