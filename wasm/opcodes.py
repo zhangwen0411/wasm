@@ -201,6 +201,7 @@ OPCODES = [
 OPCODE_MAP = {x.id: x for x in OPCODES}
 
 EXT_FC_OPCODES = [
+    Opcode(0xfc0a, 'memory.copy', CurMemCopyImm(), 0),
     Opcode(0xfc0b, 'memory.fill', CurGrowMemImm(), 0),
 ]
 EXT_FC_OPCODE_MAP = {(x.id & 0xff): x for x in EXT_FC_OPCODES}  # Key is the lowest byte.

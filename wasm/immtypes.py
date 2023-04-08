@@ -45,6 +45,11 @@ class CurGrowMemImm(Structure):
     reserved = VarUInt1Field()
 
 
+class CurMemCopyImm(Structure):
+    reserved1 = VarUInt1Field()
+    reserved2 = VarUInt1Field()
+
+
 class I32ConstImm(Structure):
     value = VarInt32Field()
 
