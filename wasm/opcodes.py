@@ -196,6 +196,8 @@ OPCODES = [
     Opcode(0xbd, 'i64.reinterpret/f64',   None,                     0),
     Opcode(0xbe, 'f32.reinterpret/i32',   None,                     0),
     Opcode(0xbf, 'f64.reinterpret/i64',   None,                     0),
+
+    Opcode(0xc0, 'i32.extend8_s',         None,                     0),
 ]
 
 OPCODE_MAP = {x.id: x for x in OPCODES}
